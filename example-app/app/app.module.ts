@@ -16,11 +16,11 @@ import { CoreModule } from './core/core.module';
 import { BooksModule } from './books/books.module';
 
 import { routes } from './routes';
-import { reducers } from './reducers';
+import { reducers, developmentReducerFactory } from './reducers';
 import { schema } from './db';
 
 import { AppComponent } from './core/containers/app';
-
+import { environment } from '../environments/environment';
 
 @NgModule({
   imports: [
@@ -31,17 +31,18 @@ import { AppComponent } from './core/containers/app';
     RouterModule.forRoot(routes, { useHash: true }),
 
     /**
-     * StoreModule.provideStore is imported once in the root module, accepting a reducer
+     * StoreModule.forRoot is imported once in the root module, accepting a reducer
      * function or object map of reducer functions. If passed an object of
      * reducers, combineReducers will be run creating your application
      * meta-reducer. This returns all providers for an @ngrx/store
-     * based application.sda
+     * based application.
      */
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot(reducers, {
+      reducerFactory: !environment.production ? developmentReducerFactory : undefined
+    }),
 
     /**
-     * @ngrx/router-store keeps router state up-to-date in the store and uses
-     * the store as the single source of truth for the router's state.
+     * @ngrx/router-store keeps router state up-to-date in the store.
      */
     StoreRouterConnectingModule,
 
@@ -58,10 +59,11 @@ import { AppComponent } from './core/containers/app';
     StoreDevtoolsModule.instrument(),
 
     /**
-     * EffectsModule.run() sets up the effects class to be initialized
-     * immediately when the application starts.
+     * EffectsModule.forRoot() is imported once in the root module and
+     * sets up the effects class to be initialized immediately when the 
+     * application starts.
      *
-     * See: https://github.com/ngrx/effects/blob/master/docs/api.md#run
+     * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
      */
     EffectsModule.forRoot([]),
 
@@ -72,11 +74,9 @@ import { AppComponent } from './core/containers/app';
     DBModule.provideDB(schema),
 
     CoreModule.forRoot(),
-    
-    BooksModule.forRoot()
+
+    BooksModule.forRoot(),
   ],
-  bootstrap: [
-    AppComponent
-  ]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

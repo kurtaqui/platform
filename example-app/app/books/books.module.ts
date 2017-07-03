@@ -46,6 +46,14 @@ export class BooksModule {
 @NgModule({
   imports: [
     BooksModule,
+    /**
+     * Effects.forFeature is used to regiser effects
+     * from feature modules. Effects can be loaded
+     * eagerly or lazily and will be started immediately.
+     * 
+     * All Effects will only be instantiated regardless of
+     * whether they are registered once or multiple times.
+     */
     EffectsModule.forFeature([
       BookEffects,
       CollectionEffects

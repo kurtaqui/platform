@@ -28,7 +28,7 @@ export const SEARCH_SCHEDULER = new InjectionToken<number>('Search Scheduler');
  * instances where the current state is not necessary.
  *
  * Documentation on `toPayload` can be found here:
- * https://github.com/ngrx/effects/blob/master/docs/api.md#topayload
+ * https://github.com/ngrx/platform/blob/master/docs/effects/api.md#topayload
  *
  * If you are unfamiliar with the operators being used in these examples, please
  * check out the sources below:
