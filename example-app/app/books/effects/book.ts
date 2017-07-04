@@ -8,7 +8,6 @@ import { Injectable, InjectionToken, Optional, Inject } from '@angular/core';
 import { Effect, Actions, toPayload } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Scheduler } from 'rxjs/Scheduler';
 import { async } from 'rxjs/scheduler/async';
 import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
@@ -18,7 +17,7 @@ import * as book from '../actions/book';
 import { Book } from 'app/books/models/book';
 
 export const SEARCH_DEBOUNCE = new InjectionToken<number>('Search Debounce');
-export const SEARCH_SCHEDULER = new InjectionToken<Scheduler>('Search Scheduler');
+export const SEARCH_SCHEDULER = new InjectionToken<any>('Search Scheduler');
 
 
 /**
@@ -40,8 +39,6 @@ export const SEARCH_SCHEDULER = new InjectionToken<Scheduler>('Search Scheduler'
 
 @Injectable()
 export class BookEffects {
-  scheduler: Scheduler | undefined;
-
   @Effect()
   search$: Observable<Action> = this.actions$
     .ofType(book.SEARCH)
@@ -70,6 +67,6 @@ export class BookEffects {
        * in normal application usage, but its injected here so that you can mock out
        * during testing using the RxJS TestScheduler for simulating passages of time.
        */
-      @Optional() @Inject(SEARCH_SCHEDULER) scheduler: Scheduler | undefined
+      @Optional() @Inject(SEARCH_SCHEDULER) private scheduler: any
     ) { }
 }
