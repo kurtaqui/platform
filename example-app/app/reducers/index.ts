@@ -32,7 +32,6 @@ export interface State {
   search: fromSearch.State;
   books: fromBooks.State;
   collection: fromCollection.State;
-  layout: fromLayout.State;
 }
 
 
@@ -47,7 +46,6 @@ export const reducers: ActionReducerMap<State> = {
   search: fromSearch.reducer,
   books: fromBooks.reducer,
   collection: fromCollection.reducer,
-  layout: fromLayout.reducer,
 };
 
 
@@ -100,6 +98,11 @@ export const developmentReducerFactory: ActionReducerFactory<State, Action> = co
  * }
  * ```
  */
+
+/**
+  * The createFeatureSelector function selects a piece of state from the root of the state object.
+  * This is used for selecting feature states that are loaded eagerly or lazily.
+*/
 export const getBooksState = createFeatureSelector<fromBooks.State>('books');
 
 /**
@@ -107,10 +110,9 @@ export const getBooksState = createFeatureSelector<fromBooks.State>('books');
  * have no knowledge of the overall state tree. To make them useable, we
  * need to make new selectors that wrap them.
  *
- * The createSelector function from the reselect library creates
- * very efficient selectors that are memoized and only recompute when arguments change.
- * The created selectors can also be composed together to select different
- * pieces of state.
+ * The createSelector function creates very efficient selectors that are memoized and
+ * only recompute when arguments change. The created selectors can also be composed 
+ * together to select different pieces of state.
  */
  export const getBookEntities = createSelector(getBooksState, fromBooks.getEntities);
  export const getBookIds = createSelector(getBooksState, fromBooks.getIds);
